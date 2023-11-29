@@ -1,5 +1,4 @@
 process preProcessing {
-	publishDir "${params.outDir}/samples", mode: 'copy'
 
 	input:
 	path mydir

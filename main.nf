@@ -15,6 +15,7 @@ def helpMessage() {
   Required:
     --inDir		    Path to input directory
     --outDir                Path to output directory
+    --barcodes		    Number of different barcodes to filter; default = 1000
  
     """.stripIndent()
 }

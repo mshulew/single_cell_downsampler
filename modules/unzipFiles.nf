@@ -1,6 +1,5 @@
 process unzipFiles {
 	tag " unzipping $filename "
-	publishDir "${params.outDir}/unzip/${filename}", mode: 'copy'
 	
 	input:
 	path myfile

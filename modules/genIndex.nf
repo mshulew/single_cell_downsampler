@@ -1,6 +1,6 @@
 process	genIndex {
 	tag " gen index $filename "
-	publishDir "${params.outDir}/genIndex/${filename}", mode: 'copy'
+	publishDir "${params.outDir}/genIndex/${filename}", mode: 'copy', pattern: "*.txt"
 
 	input:
 	tuple val (filename), path (myfiles)
