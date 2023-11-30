@@ -54,6 +54,11 @@ if __name__ == "__main__":
                           iteration, total_entries, len(barcode_map),round((time.time()-start_time),0)))
                 entry = 0
                 iteration += 1
+# get remaining indices
+    partial_map = ([i + 10000000*iteration for i, e in enumerate(barcode_subset) if e in wantedbarcodes])
+    barcode_map.extend(partial_map)
+    addToLog('Iteration {}, reads processed: {}, total indices {}, elapsed time {} sec\n'.format(
+              iteration, total_entries, len(barcode_map),round((time.time()-start_time),0)))
        
 # save to file
     with open('read_index.txt', 'w') as outputfile:
