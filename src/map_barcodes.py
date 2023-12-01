@@ -20,7 +20,7 @@ if __name__ == "__main__":
 
     subpopulated_barcode_file = sys.argv[1]
     all_barcodes_file = sys.argv[2]
-    logfile = 'log.txt'
+    logfile = 'map_barcodes_log.txt'
 
     start_time = time.time()
 

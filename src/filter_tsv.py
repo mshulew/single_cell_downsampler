@@ -21,12 +21,11 @@ def addToLog(entry):
 if __name__ == "__main__":
 
     mapfile = sys.argv[1]
-    tsvfile = sys.argv[2]
-    fileprefix = sys.argv[3]
-    logfile = 'log.txt'
+    fileprefix = sys.argv[2]
+    logfile = 'filter_reads_log.txt'
     
     with open(logfile, 'w') as log_file:
-        log_file.write('Filtering .tsv file started\n')
+        log_file.write('Filtering reads started\n')
 
     start_time = time.time()
               
@@ -38,42 +37,66 @@ if __name__ == "__main__":
 
     addToLog(' Number of reads to filter: {}\n'.format(len(read_index)))
 
+# get file names
+    for filename in os.listdir():
+        if 'R1' in filename:
+            R1 = filename
+        elif 'R2' in filename:
+            R2 = filename
+        elif 'I1' in filename:
+            I1 = filename
+
 # filter reads using map    
     filtered = []
-    addToLog('Reading .tsv file into memory, low memory mode\n')
+    addToLog('Reading fastq files into memory\n')
     iteration = 0
     entry = 0
     total_entries = 0
     partial_read_index = []
-    with open(tsvfile, 'r') as tsv_file:
+    R1entry = []
+    R2entry = []
+    I1entry = []
+    linenum = 0
+    with open(R1, 'r') as R1f, open(R2, 'r') as R2f, open(I1, 'r') as I1f:
 # filter 10000000 reads at a time
-        for line in tsv_file:
-            total_entries += 1
-            if entry == 0:
-                tsv = []
-            tsv.append(line.splitlines()[0].split('\t'))
-            entry += 1
-            if entry == 1000000:
+        for lineR1, lineR2, lineI1 in zip(R1f,R2f,I1f):
+            R1entry.append(lineR1.splitlines()[0])
+            R2entry.append(lineR2.splitlines()[0])
+            I1entry.append(lineI1.splitlines()[0])
+            linenum += 1
+            if linenum == 4:
+                if entry == 0:
+                    partial_reads = []
+                partial_reads.append(R1entry + R2entry + I1entry)
+                R1entry = []
+                R2entry = []
+                I1entry = []
+                entry += 1
+                total_entries += 1
+                linenum = 0
+                if entry == 1000000:
 
 # subdivide read_index
-                for readindx in read_index:
-                    if readindx < 1000000*(iteration + 1):
-                        if readindx >= 1000000*iteration:
-                            partial_read_index.append(readindx - 1000000*iteration)
+                    for readindx in read_index:
+                        if readindx < 1000000*(iteration + 1):
+                            if readindx >= 1000000*iteration:
+                                partial_read_index.append(readindx - 1000000*iteration)
                 
  # filter portion of reads                   
-                partial_filtered = [tsv[i] for i in partial_read_index]
-                filtered.extend(partial_filtered)
-                addToLog('iteration: {} relapsed time: {} sec\n'.format(iteration + 1,round((time.time()-start_time),0)))
-                addToLog('          total reads read: {}M\n'.format(total_entries/1000000))
-                addToLog('  number of reads filtered: {} \n'.format(len(partial_read_index)))
-                addToLog('      total reads filtered: {}\n'.format(len(filtered)))
-                addToLog('\n'.format(len(filtered)))
+                    partial_filtered = [partial_reads[i] for i in partial_read_index]
+                    filtered.extend(partial_filtered)
+                    addToLog('iteration: {} relapsed time: {} sec\n'.format(iteration + 1,round((time.time()-start_time),0)))
+                    addToLog('          total reads read: {}M\n'.format(total_entries/1000000))
+                    addToLog('  number of reads filtered: {} \n'.format(len(partial_read_index)))
+                    addToLog('      total reads filtered: {}\n'.format(len(filtered)))
+                    addToLog('\n'.format(len(filtered)))
 
 # reset counters, partial_read_index
-                iteration += 1
-                entry = 0
-                partial_read_index = []
+                    iteration += 1
+                    entry = 0
+                    partial_read_index = []
+                    partial_reads = []
+
 
  # Add final reads
  # subdivide read_index
@@ -81,9 +104,9 @@ if __name__ == "__main__":
             if readindx < 1000000*(iteration + 1):
                 if readindx >= 1000000*iteration:
                     partial_read_index.append(readindx - 1000000*iteration)
-        partial_filtered = [tsv[i] for i in partial_read_index]
+        partial_filtered = [partial_reads[i] for i in partial_read_index]
         filtered.extend(partial_filtered)
-        addToLog('iteration: {} relapsed time: {} sec\n'.format(iteration + 1,round((time.time()-start_time),0)))
+        addToLog('iteration: {} elapsed time: {} sec\n'.format(iteration + 1,round((time.time()-start_time),0)))
         addToLog('          total reads read: {}M\n'.format(total_entries/1000000))
         addToLog(' number of reads to filter: {} entries\n'.format(len(partial_read_index)))
         addToLog('      total reads filtered: {}\n'.format(len(filtered)))
@@ -113,12 +136,4 @@ if __name__ == "__main__":
             I1out.write('{}\n'.format(read[9]))
             I1out.write('{}\n'.format(read[10]))
             I1out.write('{}\n'.format(read[11]))
-            
-                                       
-        
 
-
-
-
-    
-    

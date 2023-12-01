@@ -29,7 +29,6 @@ if (params.help){
 //include modules containing processes
 include { preProcessing }                    	from './modules/preProcessing'
 include { unzipFiles }                    	from './modules/unzipFiles'
-include { genIndex }                    	from './modules/genIndex'
 include { downSample }                    	from './modules/downSample'
 
 // make path to input directory a file
@@ -57,8 +56,7 @@ if (!params.outDir) {
 workflow {
 	preProcessing(dir)
 	unzipFiles(preProcessing.out.flatten(),dir)
-	genIndex(unzipFiles.out)
-	downSample(genIndex.out.index,genIndex.out.combined)
+	downSample(unzipFiles.out)
 }
   
   
