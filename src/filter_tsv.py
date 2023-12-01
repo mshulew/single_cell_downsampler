@@ -85,9 +85,8 @@ if __name__ == "__main__":
  # filter portion of reads                   
                     partial_filtered = [partial_reads[i] for i in partial_read_index]
                     filtered.extend(partial_filtered)
-                    addToLog('iteration: {} relapsed time: {} sec\n'.format(iteration + 1,round((time.time()-start_time),0)))
+                    addToLog('iteration: {} elapsed time: {} sec\n'.format(iteration + 1,round((time.time()-start_time),0)))
                     addToLog('          total reads read: {}M\n'.format(total_entries/1000000))
-                    addToLog('  number of reads filtered: {} \n'.format(len(partial_read_index)))
                     addToLog('      total reads filtered: {}\n'.format(len(filtered)))
                     addToLog('\n'.format(len(filtered)))
 
@@ -107,8 +106,7 @@ if __name__ == "__main__":
         partial_filtered = [partial_reads[i] for i in partial_read_index]
         filtered.extend(partial_filtered)
         addToLog('iteration: {} elapsed time: {} sec\n'.format(iteration + 1,round((time.time()-start_time),0)))
-        addToLog('          total reads read: {}M\n'.format(total_entries/1000000))
-        addToLog(' number of reads to filter: {} entries\n'.format(len(partial_read_index)))
+        addToLog('          total reads read: {}\n'.format(total_entries))
         addToLog('      total reads filtered: {}\n'.format(len(filtered)))
         addToLog('Filtering complete, total reads filtered: {} elapsed time: {} sec\n'.format(len(filtered),round((time.time()-start_time),0)))
                 
