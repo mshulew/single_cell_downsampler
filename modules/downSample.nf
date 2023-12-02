@@ -1,6 +1,6 @@
 process	downSample {
 	tag " downSampled $filename "
-	publishDir "${params.outDir}/downSampled/${filename}", mode: 'copy'
+	publishDir "${params.outDir}/${filename}", mode: 'copy'
 
 	input:
 	tuple val (filename), path (myfiles)
