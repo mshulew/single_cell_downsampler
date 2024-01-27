@@ -98,20 +98,22 @@ if __name__ == "__main__":
                     addToLog('\n')
 
 # write filtered reads to file
-                    for read in partial_filtered:
-                        with open(R1_out, 'a') as R1out:
+                    with open(R1_out, 'a') as R1out:
+                        for read in partial_filtered:
                             R1out.write('{}\n'.format(read[0]))
                             R1out.write('{}\n'.format(read[1]))
                             R1out.write('{}\n'.format(read[2]))
                             R1out.write('{}\n'.format(read[3]))
 
-                        with open(R2_out, 'a') as R2out:
+                    with open(R2_out, 'a') as R2out:
+                        for read in partial_filtered:
                             R2out.write('{}\n'.format(read[4]))
                             R2out.write('{}\n'.format(read[5]))
                             R2out.write('{}\n'.format(read[6]))
                             R2out.write('{}\n'.format(read[7]))
 
-                        with open(I1_out, 'a') as I1out:
+                    with open(I1_out, 'a') as I1out:
+                        for read in partial_filtered:
                             I1out.write('{}\n'.format(read[8]))
                             I1out.write('{}\n'.format(read[9]))
                             I1out.write('{}\n'.format(read[10]))
